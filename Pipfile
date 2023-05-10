@@ -1,0 +1,49 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+beautifulsoup4 = "*"
+colorama = "==0.4.6"
+openai = "==0.27.2"
+playsound = "==1.2.2"
+python-dotenv = "==1.0.0"
+pyyaml = "==6.0"
+readability-lxml = "==0.8.1"
+requests = "*"
+tiktoken = "==0.3.3"
+gtts = "==2.3.1"
+docker = "*"
+duckduckgo-search = "*"
+google-api-python-client = "*"
+pinecone-client = "==2.2.1"
+redis = "*"
+orjson = "*"
+pillow = "*"
+selenium = "*"
+webdriver-manager = "*"
+jsonschema = "*"
+tweepy = "*"
+click = "*"
+spacy = "<4.0.0,>=3.0.0"
+en-core-web-sm = {file = "https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.4.0/en_core_web_sm-3.4.0-py3-none-any.whl"}
+coverage = "*"
+flake8 = "*"
+numpy = "*"
+pre-commit = "*"
+black = "*"
+isort = "*"
+gitpython = "==3.1.31"
+pytest = "*"
+asynctest = "*"
+pytest-asyncio = "*"
+pytest-benchmark = "*"
+pytest-cov = "*"
+pytest-integration = "*"
+pytest-mock = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.11"
