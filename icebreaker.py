@@ -4,31 +4,31 @@ from langchain.chat_models import ChatOpenAI
 from langchain import PromptTemplate
 from third_parties.linkedin import scrape_linkedin_profile 
 from agents.linkedin_lookup_agent import lookup as linkedin_lookup_agent
+from output_parsers import (
+    PersonIntel,
+    person_intel_parser
+)
 
-information = """
-Mr. Lim Hua Min is the Executive Chairman of PhillipCapital Group of Companies and was also appointed Chairman of IFS Capital Limited on 20 May 2003. He began his career holding senior positions in the Stock Exchange of Singapore and the Securities Research Institute. He has served on a number of committees and sub-committees of the Stock Exchange of Singapore. In 1997, he was appointed Chairman of the Stock Exchange of Singapore (SES) Review Committee, which is responsible for devising a conceptual framework to make Singapore’s capital markets more globalised, competitive and robust. For this service, he was awarded the Public Service Medal (PBM) in 1999 by the Singapore Government. In 2014, he was also awarded “IBF Distinguished Fellow" (Securities & Futures), the highest certification mark bestowed by The Institute of Banking and Finance on industry captains who are the epitome of professional stature, integrity and achievement. In 2018, he was named Businessman of the Year 2017 at the annual Singapore Business Awards, which is Singapore’s most prestigious business accolade.
+def ice_break(name: str) -> Tuple[PersonIntel, str]:
+    linkedin_profile_url = linkedin_lookup_agent(name=name)
+    linkedin_data = scrape_linkedin_profile(linkedin_profile_url = linkedin_profile_url )
 
-He served as a board member in the Inland Revenue Authority Singapore from 2004 to 2010. He was Chairman and Elder of Covenant Evangelical Free Church, Singapore for a number of years.
-
-Mr. Lim holds a Bachelor of Science Degree (Honours) in Chemical Engineering from the University of Surrey and obtained a Master’s Degree in Operations Research and Management Studies from Imperial College, London University.
-"""
-
-if __name__ == "__main__":
-    print("running Langchain")
-
-    linkedin_profile_url = linkedin_lookup_agent(name="Joshua Goh")
 
     summary_template = """
-        given the information {information} about a person, I want you to create:
+        given the information {linkedin_information} about a person, I want you to create:
         1. a short summary
         2. two interesting facts about them
+        3. a topic that may interest them
+        4. 2 creative ice breakers to open a conversation with them
+        \n{format_instructions}
     """
 
     os.environ.get["OPENAI_API_KEY"] = ""
 
     summary_prompt_template = PromptTemplate(
-        input_variables=["information"], 
-        template=summary_template
+        template=summary_template,
+        input_variables=["linkedin_information"],
+        partial_variables={"format_instructions": person_intel_parser.get_format_instructions()}
     )
 
     llm = ChatOpenAI(
@@ -41,7 +41,15 @@ if __name__ == "__main__":
         prompt=summary_prompt_template
     )
 
-    linkedin_data = scrape_linkedin_profile(linkedin_profile_url = linkedin_profile_url )
+    res = chain.run(linkedin_information=linkedin_data)
 
-    print(chain.run(information=linkedin_data))
+    return person_intel_parser.parse(res), linkedin_data.get("profile_pic_url")
 
+if __name__ == "__main__":
+    print("running Langchain")
+    res = ice_break(name="Joshua Goh")
+    print(res)
+
+    
+
+ 
