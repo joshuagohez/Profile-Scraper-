@@ -1,7 +1,12 @@
 from langchain.serpapi import SerpAPIWrapper
 from langchain.agents import tool
 
-def _process_response(res: dict) -> str:
+def CustomSerpAPIWrapper(SerpAPIWrapper):
+    def __init__(self):
+        super(CustomSerpAPIWrapper, self).__init__()
+    
+    @staticmethod
+    def _process_response(res: dict) -> str:
         """Process response from SerpAPI."""
         if "error" in res.keys():
             raise ValueError(f"Got error from SerpAPI: {res['error']}")
