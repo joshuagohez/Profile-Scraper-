@@ -1,4 +1,5 @@
 import os
+from typing import Tuple
 from langchain.chains import LLMChain
 from langchain.chat_models import ChatOpenAI
 from langchain import PromptTemplate
@@ -23,7 +24,7 @@ def ice_break(name: str) -> Tuple[PersonIntel, str]:
         \n{format_instructions}
     """
 
-    os.environ.get["OPENAI_API_KEY"] = ""
+    os.environ.get('OPENAI_API_KEY')
 
     summary_prompt_template = PromptTemplate(
         template=summary_template,
@@ -41,14 +42,18 @@ def ice_break(name: str) -> Tuple[PersonIntel, str]:
         prompt=summary_prompt_template
     )
 
-    res = chain.run(linkedin_information=linkedin_data)
+    try:
+        res = chain.run(linkedin_information=linkedin_data)
+    except ValueError as e:
+        res = str(e)
+        if not res.startswith("Could not parse LLM output: `"):
+            raise e
+        res = res.removeprefix("Could not parse LLM output: `").removesuffix("`")
 
     return person_intel_parser.parse(res), linkedin_data.get("profile_pic_url")
 
 if __name__ == "__main__":
-    print("running Langchain")
-    res = ice_break(name="Joshua Goh")
-    print(res)
+    pass
 
     
 
