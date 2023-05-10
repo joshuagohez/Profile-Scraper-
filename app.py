@@ -13,11 +13,11 @@ def process():
     person_info, profile_pic_url = ice_break(name=name)
 
     return jsonify({
-        # "summary": person_info.summary, 
-        # "facts": person_info.facts, 
-        # "topics_of_interest": person_info.topics_of_interest, 
-        # "ice_breakers": person_info.ice_breakers,
-        "person_info": person_info.to_dict(),
+        "summary": person_info.summary, 
+        "facts": person_info.facts, 
+        "topics_of_interest": person_info.topics_of_interest, 
+        "ice_breakers": person_info.ice_breakers,
+        # "person_info": person_info.to_dict(),
         "profile_pic_url": profile_pic_url
     })
 
