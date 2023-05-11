@@ -10,16 +10,16 @@ def index():
 @app.route("/process", methods=["POST"])
 def process():
     name = request.form["name"]
-    person_info, profile_pic_url = ice_break(name=name)
+    summary_facts, interests, icebreakers, profile_pic_url = ice_break(name=name)
 
-    return jsonify({
-        "summary": person_info.summary, 
-        "facts": person_info.facts, 
-        "topics_of_interest": person_info.topics_of_interest, 
-        "ice_breakers": person_info.ice_breakers,
-        # "person_info": person_info.to_dict(),
-        "profile_pic_url": profile_pic_url
-    })
+    return jsonify(
+        {
+            "summary_facts": summary_facts.to_dict(), 
+            "topics_of_interest": interests.to_dict(), 
+            "ice_breakers": icebreakers.to_dict(),
+            "profile_pic_url": profile_pic_url
+        }
+    )
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", debug=True)
