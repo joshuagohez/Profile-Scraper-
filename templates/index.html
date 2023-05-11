@@ -41,13 +41,13 @@
                     url: '/process',
                     data: $('#name-form').serialize(),
                     type: 'POST',
-                    success: function (response) {
-                        $('#profile-pic').attr('src', response.profile_pic_url); // Update the profile picture src attribute
+                    success: function (res) {
+                        $('#profile-pic').attr('src', res.profile_pic_url); // Update the profile picture src attribute
                         $('#profile-pic').show(); // Show the profile picture
-                        $('#summary-and-facts').text(response.summary);
-                        $('#interests').html('<ul>' + response.facts.map(fact => '<li>' + fact + '</li>').join('') + '</ul>');
-                        $('#ice-breakers').html('<ul>' + response.ice_breakers.map(ice_breaker => '<li>' + ice_breaker + '</li>').join('') + '</ul>');
-                        $('#topics-of-interest').html('<ul>' + response.ice_breakers.map(topic => '<li>' + topic + '</li>').join('') + '</ul>');
+                        $('#summary-and-facts').text(res.summary_facts.summary);
+                        $('#interests').html('<ul>' + res.summary_facts.facts.map(fact => '<li>' + fact + '</li>').join('') + '</ul>');
+                        $('#ice-breakers').html('<ul>' + res.ice_breakers.ice_breakers.map(ice_breaker => '<li>' + ice_breaker + '</li>').join('') + '</ul>');
+                        $('#topics-of-interest').html('<ul>' + res.topics_of_interest.topics_of_interest.map(topic => '<li>' + topic + '</li>').join('') + '</ul>');
                     },
                     error: function (error) {
                         console.log(error);
